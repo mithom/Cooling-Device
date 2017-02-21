@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Cooling_Device"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/thomas/Documents/Cooling-Device/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/thomas/Documents/Cooling-Device/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/thomas/Documents/Cooling-Device/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cooling_Device">
+				<Option output="/home/thomas/Documents/Cooling-Device/cmake-build-debug/Cooling_Device" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/thomas/Documents/Cooling-Device/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 Cooling_Device"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cooling_Device/fast">
+				<Option output="/home/thomas/Documents/Cooling-Device/cmake-build-debug/Cooling_Device" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/thomas/Documents/Cooling-Device/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 Cooling_Device/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/thomas/Documents/Cooling-Device/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/README.md">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/build-home.sh">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/build.sh">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.hpp">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/pyplotter/pyplotter.py">
+			<Option target="Cooling_Device"/>
+		</Unit>
+		<Unit filename="/home/thomas/Documents/Cooling-Device/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

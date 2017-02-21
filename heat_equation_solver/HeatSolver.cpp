@@ -1,9 +1,9 @@
 #include <Python.h>
 #include <iostream>
-//#define EIGEN_USE_LAPACKE_STRICT
-//#define EIGEN_USE_BLAS
-#include "../packages/Eigen/Dense"
-#include "../packages/Eigen/Sparse"
+#define EIGEN_USE_LAPACKE_STRICT
+#define EIGEN_USE_BLAS
+#include "Eigen/Dense"
+#include "Eigen/Sparse"
 
 using namespace std;
 using namespace Eigen;

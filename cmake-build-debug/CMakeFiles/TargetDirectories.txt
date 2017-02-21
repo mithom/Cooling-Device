@@ -1,0 +1,3 @@
+/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles/Cooling_Device.dir

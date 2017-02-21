@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o  -o Cooling_Device 
