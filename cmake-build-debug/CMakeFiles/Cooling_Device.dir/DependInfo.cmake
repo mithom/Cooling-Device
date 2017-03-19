@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp" "/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o"
+  "/home/thomas/Documents/Cooling-Device/Main.cpp" "/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles/Cooling_Device.dir/Main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

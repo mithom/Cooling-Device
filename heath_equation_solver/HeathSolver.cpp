@@ -1,10 +1,9 @@
-#include <Python.h>
-#include <iostream>
 #define EIGEN_USE_LAPACKE_STRICT
 #define EIGEN_USE_BLAS
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Sparse>
-#include <eigen3/Eigen/Core>
+
+#include <iostream>
 
 using namespace std;
 using namespace Eigen;
@@ -21,28 +20,12 @@ const double Q = 2.5;
 const double X = 0.01;
 const double Y = X;
 
-PyObject *pValue;
-
-int main(int argc, char** argv){
-    if(argc < 2){
-        cout << "you should give at least 1 argument";
-        return 0;
-    }
-    const int n = atoi(argv[1]);
+void solve_heath(const int n){
     VectorXd vec(n);
-    VectorXd v = VectorXd::Random(1000);
+    VectorXd v = VectorXd::Random(100);
     vec << 1,2,3,4,5,6,7,8,9,10;
     cout << "v= " << v <<endl<< "vec= " << vec << endl;
-    MatrixXd m = MatrixXd::Random(1000,1000);
+    MatrixXd m = MatrixXd::Random(100,100);
     //VectorXd v1 = m.selfadjointView<Upper>().llt().solve(v);
     //cout<<v1<<endl;
-
-
-    //a little python experiment
-    Py_Initialize();
-    int a = 5;
-    pValue = PyInt_FromLong(a);
-    PyRun_SimpleString("print('hello')");
-    Py_Finalize();
-return 0;
 }

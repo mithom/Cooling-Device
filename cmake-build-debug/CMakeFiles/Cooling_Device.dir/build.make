@@ -57,38 +57,38 @@ include CMakeFiles/Cooling_Device.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Cooling_Device.dir/flags.make
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o: CMakeFiles/Cooling_Device.dir/flags.make
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o: ../heat_equation_solver/HeatSolver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o -c /home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp
+CMakeFiles/Cooling_Device.dir/Main.cpp.o: CMakeFiles/Cooling_Device.dir/flags.make
+CMakeFiles/Cooling_Device.dir/Main.cpp.o: ../Main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/thomas/Documents/Cooling-Device/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Cooling_Device.dir/Main.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Cooling_Device.dir/Main.cpp.o -c /home/thomas/Documents/Cooling-Device/Main.cpp
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp > CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.i
+CMakeFiles/Cooling_Device.dir/Main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Cooling_Device.dir/Main.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/thomas/Documents/Cooling-Device/Main.cpp > CMakeFiles/Cooling_Device.dir/Main.cpp.i
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp -o CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.s
+CMakeFiles/Cooling_Device.dir/Main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Cooling_Device.dir/Main.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/thomas/Documents/Cooling-Device/Main.cpp -o CMakeFiles/Cooling_Device.dir/Main.cpp.s
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.requires:
+CMakeFiles/Cooling_Device.dir/Main.cpp.o.requires:
 
-.PHONY : CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.requires
+.PHONY : CMakeFiles/Cooling_Device.dir/Main.cpp.o.requires
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.provides: CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.requires
-	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.provides.build
-.PHONY : CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.provides
+CMakeFiles/Cooling_Device.dir/Main.cpp.o.provides: CMakeFiles/Cooling_Device.dir/Main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/Main.cpp.o.provides.build
+.PHONY : CMakeFiles/Cooling_Device.dir/Main.cpp.o.provides
 
-CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.provides.build: CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o
+CMakeFiles/Cooling_Device.dir/Main.cpp.o.provides.build: CMakeFiles/Cooling_Device.dir/Main.cpp.o
 
 
 # Object files for target Cooling_Device
 Cooling_Device_OBJECTS = \
-"CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o"
+"CMakeFiles/Cooling_Device.dir/Main.cpp.o"
 
 # External object files for target Cooling_Device
 Cooling_Device_EXTERNAL_OBJECTS =
 
-Cooling_Device: CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o
+Cooling_Device: CMakeFiles/Cooling_Device.dir/Main.cpp.o
 Cooling_Device: CMakeFiles/Cooling_Device.dir/build.make
 Cooling_Device: /usr/lib/x86_64-linux-gnu/libpython2.7.so
 Cooling_Device: CMakeFiles/Cooling_Device.dir/link.txt
@@ -100,7 +100,7 @@ CMakeFiles/Cooling_Device.dir/build: Cooling_Device
 
 .PHONY : CMakeFiles/Cooling_Device.dir/build
 
-CMakeFiles/Cooling_Device.dir/requires: CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o.requires
+CMakeFiles/Cooling_Device.dir/requires: CMakeFiles/Cooling_Device.dir/Main.cpp.o.requires
 
 .PHONY : CMakeFiles/Cooling_Device.dir/requires
 

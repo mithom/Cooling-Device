@@ -86,10 +86,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.cpp">
-			<Option target="Cooling_Device"/>
-		</Unit>
-		<Unit filename="/home/thomas/Documents/Cooling-Device/heat_equation_solver/HeatSolver.hpp">
+		<Unit filename="/home/thomas/Documents/Cooling-Device/Main.cpp">
 			<Option target="Cooling_Device"/>
 		</Unit>
 		<Unit filename="/home/thomas/Documents/Cooling-Device/CMakeLists.txt">

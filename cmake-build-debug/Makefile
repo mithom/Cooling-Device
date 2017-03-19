@@ -123,32 +123,32 @@ Cooling_Device/fast:
 	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/build
 .PHONY : Cooling_Device/fast
 
-heat_equation_solver/HeatSolver.o: heat_equation_solver/HeatSolver.cpp.o
+Main.o: Main.cpp.o
 
-.PHONY : heat_equation_solver/HeatSolver.o
+.PHONY : Main.o
 
 # target to build an object file
-heat_equation_solver/HeatSolver.cpp.o:
-	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o
-.PHONY : heat_equation_solver/HeatSolver.cpp.o
+Main.cpp.o:
+	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/Main.cpp.o
+.PHONY : Main.cpp.o
 
-heat_equation_solver/HeatSolver.i: heat_equation_solver/HeatSolver.cpp.i
+Main.i: Main.cpp.i
 
-.PHONY : heat_equation_solver/HeatSolver.i
+.PHONY : Main.i
 
 # target to preprocess a source file
-heat_equation_solver/HeatSolver.cpp.i:
-	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.i
-.PHONY : heat_equation_solver/HeatSolver.cpp.i
+Main.cpp.i:
+	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/Main.cpp.i
+.PHONY : Main.cpp.i
 
-heat_equation_solver/HeatSolver.s: heat_equation_solver/HeatSolver.cpp.s
+Main.s: Main.cpp.s
 
-.PHONY : heat_equation_solver/HeatSolver.s
+.PHONY : Main.s
 
 # target to generate assembly for a file
-heat_equation_solver/HeatSolver.cpp.s:
-	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.s
-.PHONY : heat_equation_solver/HeatSolver.cpp.s
+Main.cpp.s:
+	$(MAKE) -f CMakeFiles/Cooling_Device.dir/build.make CMakeFiles/Cooling_Device.dir/Main.cpp.s
+.PHONY : Main.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Cooling_Device"
-	@echo "... heat_equation_solver/HeatSolver.o"
-	@echo "... heat_equation_solver/HeatSolver.i"
-	@echo "... heat_equation_solver/HeatSolver.s"
+	@echo "... Main.o"
+	@echo "... Main.i"
+	@echo "... Main.s"
 .PHONY : help
 
 

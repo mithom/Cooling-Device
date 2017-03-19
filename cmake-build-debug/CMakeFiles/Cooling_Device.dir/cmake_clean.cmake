@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Cooling_Device.dir/heat_equation_solver/HeatSolver.cpp.o"
+  "CMakeFiles/Cooling_Device.dir/Main.cpp.o"
   "Cooling_Device.pdb"
   "Cooling_Device"
 )
