@@ -1,9 +1,8 @@
+#include <iostream>
 #define EIGEN_USE_LAPACKE_STRICT
 #define EIGEN_USE_BLAS
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Sparse>
-
-#include <iostream>
 
 using namespace std;
 using namespace Eigen;
@@ -26,6 +25,6 @@ void solve_heath(const int n){
     vec << 1,2,3,4,5,6,7,8,9,10;
     cout << "v= " << v <<endl<< "vec= " << vec << endl;
     MatrixXd m = MatrixXd::Random(100,100);
-    //VectorXd v1 = m.selfadjointView<Upper>().llt().solve(v);
-    //cout<<v1<<endl;
+    VectorXd v1 = m.selfadjointView<Upper>().llt().solve(v);
+    cout<<v1<<endl;
 }
