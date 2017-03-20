@@ -38,8 +38,9 @@ void solve_heath(double (&k)[n][n]){
     A.reserve(VectorXi::Constant(m,5)); //reserve space for 5 cols/row
     VectorXd Q = VectorXd::Ones(m);
     Q=2.5/0.0001*Q;
+    double mu = 1.0/(dx*dx);
     //this probably can be done with slicing in Eigen!!!! make use of this
-    for(int i=1;i < n-1;i++){
+    for(int i=1;i < n-1;i++){//0 en n-1 zijn de randgevallen
         for(int j = 1;j < n-1;j++){ //general case
             A.insert(i*n+j,(i)*n+j) = -4*k[i][j] + k[i-1][j]+ k[i+1][j]+ k[i][j-1]+ k[i][j+1];
             A.insert(i*n+j,(i-1)*n+j) = k[i][j] + k[i-1][j];
@@ -94,7 +95,7 @@ void solve_heath(double (&k)[n][n]){
     A.insert(m-1,m-1) = -2*k[n-1][n-1] + k[n-2][n-1]+ k[n-1][n-2];
     A.insert(m-1,m-2) = k[n-1][n-1] + k[n-1][n-2];
     A.insert(m-1,m-1-n) =k[n-1][n-1]+ k[n-2][n-1];
-    //A=-1*A;
+    A=-1*A*mu/2.0;
 
     //SparseLU<SparseMatrix<double> > solver;
     /*solver.analyzePattern(A);   // for this step the numerical values of A are not used
