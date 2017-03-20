@@ -99,19 +99,17 @@ void solve_heath(double (&k)[n][n]){
 
     }
 
-    //SparseLU<SparseMatrix<double> > solver;
-    /*solver.analyzePattern(A);   // for this step the numerical values of A are not used
-    cout <<"analysed" <<endl;
+    SparseLU<SparseMatrix<double> > solver;
+    // fill A and b;
+    // Compute the ordering permutation vector from the structural pattern of A
+    solver.analyzePattern(A);
+    // Compute the numerical factorization
     solver.factorize(A);
-    cout << "factorised" <<endl;*/
-    BiCGSTAB<SparseMatrix<double> > solver;
-    solver.compute(A);
-    cout <<"calculated" <<endl;
-
+    cout <<"factorized"<<endl;
     VectorXd x1 = solver.solve(Q);
     cout <<"solved"<<endl;
     cout <<x1<<endl;
-    cout << solver.error();
+    //cout << solver.error();
     cout<<endl<<endl<<endl<<A;
 
 }
