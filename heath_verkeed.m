@@ -1,9 +1,9 @@
 
-function [U] = heath_complex_correct_bc_2d(k)
+function [U] = heath_verkeed(k)
     n=50;
     dx = 0.01/n;
     A = zeros(n^2);
-    %k = k*ones(n,n);
+    k = k*ones(n,n);
     mu = 1/dx^2;
 
     for x = 1:(n)

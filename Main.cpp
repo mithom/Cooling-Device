@@ -1,11 +1,10 @@
-#include <Python.h>
 #include <iostream>
 #include "heath_equation_solver/HeathSolver.cpp"
 #include <algorithm>
+#include "pyplotter/pyplotter.cpp"
 
 using namespace std;
 
-PyObject *pValue;
 int n_var;
 
 int main(int argc, char** argv){
@@ -20,13 +19,10 @@ int main(int argc, char** argv){
     for(int i=0;i<n;i++){
         std::fill_n(k[i],n,80.0);
     }
-    solve_heath(k);
+    double solution[n*n];
+    solve_heath(k,solution);
 
     //a little python experiment
-    Py_Initialize();
-    int a = 5;
-    pValue = PyInt_FromLong(a);
-    PyRun_SimpleString("print('hello')");
-    Py_Finalize();
+    plot(solution,n);
     return 0;
 }
