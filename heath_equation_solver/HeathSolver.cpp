@@ -30,7 +30,7 @@ void test_packages(const int n){
 }
 
 template<int n>
-void solve_heath(double (&k)[n][n], double result[]){
+void solve_heath(double (&k)[n][n], double *result){
     //test_packages(10);
     const double dx = X/n;
     const int m = n*n;
@@ -105,11 +105,8 @@ void solve_heath(double (&k)[n][n], double result[]){
     solver.analyzePattern(A);
     // Compute the numerical factorization
     solver.factorize(A);
-    cout <<"factorized"<<endl;
     VectorXd x1 = solver.solve(Q);
-    cout <<"solved"<<endl;
-    cout <<x1<<endl;
+    cout <<x1<<endl<<endl;
     //cout << solver.error();
-    cout<<endl<<endl<<endl<<A;
-    result = x1.data();
+    Map<MatrixXd>( result, x1.rows(), x1.cols() ) = x1;
 }
