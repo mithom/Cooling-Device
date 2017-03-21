@@ -1,6 +1,6 @@
 
 function [U] = heath_verkeed(k)
-    n=50;
+    n=10;
     dx = 0.01/n;
     A = zeros(n^2);
     k = k*ones(n,n);

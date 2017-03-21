@@ -5,32 +5,33 @@ PyObject *pArgs, *pValue;
 PyObject *makelist(double array[], size_t size) {
     PyObject *l = PyList_New(size);
     for (size_t i = 0; i != size; ++i) {
+        cout << array[i]<<", ";
         PyList_SET_ITEM(l, i, PyFloat_FromDouble(array[i]));
     }
+    cout <<endl;
     return l;
 }
 
 void plot(double solution[], size_t size){
     Py_Initialize();
-    pName = PyString_FromString("pyplotter.py");
-    cout <<"got name"<<endl;
-    if(pName != NULL) cout << "pname not null"<<endl;
+    pName = PyString_FromString("pyplotter");
+    //there is no working directory since no python module, need to add this map to systpath manualy
+    PyObject* sysPath = PySys_GetObject((char*)"path");
+    PyObject* curDir = PyString_FromString("/home/thomas/Documents/Cooling-Device/pyplotter/");
+    PyList_Append(sysPath, curDir);
     /* Error checking of pName left out */
-    cout << pName<<endl;
     pModule = PyImport_Import(pName);
-    cout << pModule <<endl;
     Py_DECREF(pName);
-    cout <<"got file"<<endl;
+    Py_DECREF(curDir);
     if(pModule != NULL){
         cout <<"yeay"<<endl;
     }else cout <<"oh :'("<<endl;
 
     pFunc = PyObject_GetAttrString(pModule, "test");
-    cout <<"got func"<<endl;
     PyObject *arglist = Py_BuildValue("(S)", makelist(solution,size));
     cout << "build arglist"<<endl;
-    //PyObject *result = PyObject_CallObject(pFunc, arglist);
-    //cout<<"called function"<<endl;
+    PyObject *result = PyObject_CallObject(pFunc, arglist);
+    cout<<"called function"<<endl;
     Py_DECREF(arglist);
     cout<<"ready to finalize"<<endl;
     Py_Finalize();

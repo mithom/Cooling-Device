@@ -23,6 +23,6 @@ int main(int argc, char** argv){
     solve_heath(k,solution);
 
     //a little python experiment
-    plot(solution,n);
+    plot(solution,n*n);
     return 0;
 }
