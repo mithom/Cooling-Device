@@ -5,10 +5,8 @@ PyObject *pArgs, *pValue;
 PyObject *makelist(double array[], size_t size) {
     PyObject *l = PyList_New(size);
     for (size_t i = 0; i != size; ++i) {
-        cout << array[i]<<", ";
         PyList_SET_ITEM(l, i, PyFloat_FromDouble(array[i]));
     }
-    cout <<endl;
     return l;
 }
 
@@ -29,7 +27,6 @@ void plot(double solution[], size_t size){
 
     pFunc = PyObject_GetAttrString(pModule, "test");
     PyObject *arglist = Py_BuildValue("(S)", makelist(solution,size));
-    cout << "build arglist"<<endl;
     PyObject *result = PyObject_CallObject(pFunc, arglist);
     cout<<"called function"<<endl;
     Py_DECREF(arglist);
