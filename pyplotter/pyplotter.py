@@ -14,8 +14,6 @@ def multiply_b(a):
     return c"""
 
 def test(a):
-    print(a)
-
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 

@@ -82,7 +82,7 @@ function [U] = heath_verkeed(k)
     end
     A=-A;
     Q=ones(n^2,1);
-    Q = 2.5*Q/0.01^2;
+    Q = 2.5*Q/(0.01^2);
     for y=1:n
         if y*dx>0.003 && (y-1)*dx<0.007
             Q((y-1)*n+1) = 300;

@@ -37,7 +37,7 @@ void solve_heath(double (&k)[n][n], double *result){
     SparseMatrix<double> A(m,m);
     A.reserve(VectorXi::Constant(m,5)); //reserve space for 5 cols/row
     VectorXd Q = VectorXd::Ones(m);
-    Q=2.5/0.0001*Q;
+    Q=2.5/(0.01*0.01)*Q;
     double mu = 1.0/(dx*dx);
     //this probably can be done with slicing in Eigen!!!! make use of this
     for(int i=1;i < n-1;i++){//0 en n-1 zijn de randgevallen
@@ -88,7 +88,7 @@ void solve_heath(double (&k)[n][n], double *result){
 
     for(int i = 1;i<n-1;i++){ //left edge
         if(i*dx <= Y_r_iso || i*dx >= X-Y_r_iso){ //upper and lower side
-            A.insert(i*n,(i)*n) = (-3*k[i][0]+ k[i-1][0]+ k[i+1][0]+ k[i][1])*mu/2;
+            A.insert(i*n,(i)*n) = (3*k[i][0]+ k[i-1][0]+ k[i+1][0]+ k[i][1])*mu/2;
             A.insert(i*n,(i-1)*n) = -(k[i][0]+ k[i-1][0])*mu/2;
             A.insert(i*n,(i+1)*n) =-(k[i][0]+ k[i+1][0])*mu/2;
             A.insert(i*n,(i)*n+1) =-(k[i][0]+ k[i][1])*mu/2;
@@ -106,7 +106,6 @@ void solve_heath(double (&k)[n][n], double *result){
     // Compute the numerical factorization
     solver.factorize(A);
     VectorXd x1 = solver.solve(Q);
-    cout <<x1<<endl<<endl;
-    //cout << solver.error();
+    //cout <<x1<<endl<<endl;
     Map<MatrixXd>( result, x1.rows(), x1.cols() ) = x1;
 }
