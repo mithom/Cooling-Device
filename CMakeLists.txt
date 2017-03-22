@@ -16,6 +16,7 @@ find_package(LAPACK)
 
 find_package(Eigen3 REQUIRED)
 include_directories(Eigen3_INCLUDE_DIR)
+include_directories(~/CoinIpopt/build/include/coin)
 
 target_link_libraries(Cooling_Device blas)
 target_link_libraries(Cooling_Device lapack)

@@ -2,6 +2,7 @@
 #include "heath_equation_solver/HeathSolver.cpp"
 #include <algorithm>
 #include "pyplotter/pyplotter.cpp"
+#include
 
 using namespace std;
 
@@ -14,10 +15,10 @@ int main(int argc, char** argv){
     }else{
         n_var = atoi(argv[1]);
     }*/
-    const int n = 10; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
+    const int n = 500; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
     double k[n][n];
     for(int i=0;i<n;i++){
-        std::fill_n(k[i],n,80.0);
+        std::fill_n(k[i],n,80);
     }
     double solution[n*n];
     solve_heath(k,solution);

@@ -85,7 +85,6 @@ void solve_heath(double (&k)[n][n], double *result){
     A.insert(m-1,m-1-n) =k[n-1][n-1]+ k[n-2][n-1];
     //compensate matrix scaling
     A=-1*A*mu/2.0;
-
     for(int i = 1;i<n-1;i++){ //left edge
         if(i*dx <= Y_r_iso || i*dx >= X-Y_r_iso){ //upper and lower side
             A.insert(i*n,(i)*n) = (3*k[i][0]+ k[i-1][0]+ k[i+1][0]+ k[i][1])*mu/2;
@@ -100,6 +99,7 @@ void solve_heath(double (&k)[n][n], double *result){
     }
 
     SparseLU<SparseMatrix<double> > solver;
+    cout <<"solved"<<endl;
     // fill A and b;
     // Compute the ordering permutation vector from the structural pattern of A
     solver.analyzePattern(A);
