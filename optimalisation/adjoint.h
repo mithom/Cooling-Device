@@ -115,6 +115,53 @@ public:
             double test2 = dydpi * dAdpi * x;
             dydp[i*n] = test2;
         }
+        //bottom left corner
+        dAdpi.setZero();
+        dAdpi.insert(0,0) = 2;
+        dAdpi.insert(0,1) = -1;
+        dAdpi.insert(0,n) = -1;
+
+        dAdpi.insert(n,0) = 1;
+        dAdpi.insert(1,0) = 1;
+        RowVectorXd dydpi = d * A_inv;
+        double test2 = dydpi * dAdpi * x;
+        dydp[0] = test2;
+
+        //bottom right corner
+        dAdpi.setZero();
+        dAdpi.insert(n-1,n-1) = 2;
+        dAdpi.insert(n-1,n-2) = -1;
+        dAdpi.insert(n-1,n+n-1) = -1;
+
+        dAdpi.insert(n+n-1,n-1) = 1;
+        dAdpi.insert(n-2,n-1) = 1;
+        dydpi = d * A_inv;
+        test2 = dydpi * dAdpi * x;
+        dydp[n-1] = test2;
+
+        //top right corner
+        dAdpi.setZero();
+        dAdpi.insert(n*n-1,n*n-1) = 2;
+        dAdpi.insert(n*n-1,n*n-2) = -1;
+        dAdpi.insert(n*n-1,(n-1)*n-1) = -1;
+
+        dAdpi.insert(n*n-2,n*n-1) = 1;
+        dAdpi.insert((n-1)*n-1,n*n-1) = 1;
+        dydpi = d * A_inv;
+        test2 = dydpi * dAdpi * x;
+        dydp[n*n-1] = test2;
+
+        //top left corner
+        dAdpi.setZero();
+        dAdpi.insert((n-1)*n,(n-1)*n) = 2;
+        dAdpi.insert((n-1)*n,(n-1)*n+1) = -1;
+        dAdpi.insert((n-1)*n,(n-2)*n) = -1;
+
+        dAdpi.insert((n-1)*n+1,(n-1)*n) = 1;
+        dAdpi.insert((n-2)*n,(n-1)*n) = 1;
+        dydpi = d * A_inv;
+        test2 = dydpi * dAdpi * x;
+        dydp[(n-1)*n] = test2;
     }
 };
 
