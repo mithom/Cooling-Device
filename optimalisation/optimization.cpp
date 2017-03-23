@@ -27,17 +27,16 @@ HS071_NLP::~HS071_NLP()
 bool HS071_NLP::get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
                              Index& nnz_h_lag, IndexStyleEnum& index_style)
 {
-  // The problem described in HS071_NLP.hpp has 4 variables, x[0] through x[3]
+  // The problem N^2 variables
   n = N*N;
 
-  // one equality constraint and one inequality constraint
+  // one inequality constraint
   m = 1;
 
-  // in this example the jacobian is dense and contains 8 nonzeros
+  // in this example the jacobian is dense and contains N^2 nonzeros
   nnz_jac_g = N*N;
 
-  // the hessian is also dense and has 16 total nonzeros, but we
-  // only need the lower left corner (since it is symmetric)
+  // the hessian is 0
   nnz_h_lag = 0;
 
   // use the C style indexing (0-based)
@@ -55,27 +54,21 @@ bool HS071_NLP::get_bounds_info(Index n, Number* x_l, Number* x_u,
   assert(n == N*N);
   assert(m == 1);
 packages/math_eng_soft/CoinIpopt/build/bin/
-  // the variables have lower bounds of 1
+  // the variables have lower bounds of 0
   for (Index i=0; i<N*N; i++) {
     x_l[i] = 0.0;
   }
 
-  // the variables have upper bounds of 5
+  // the variables have upper bounds of 1
   for (Index i=0; i<N*N; i++) {
     x_u[i] = 1.0;
   }
 
-  // the first constraint g1 has a lower bound of 25
+  // the first constraint g1 has a lower bound of 0
   g_l[0] = 0;
-  // the first constraint g1 has NO upper bound, here we set it to 2e19.
-  // Ipopt interprets any number greater than nlp_upper_bound_inf as
-  // infinity. The default value of nlp_upper_bound_inf and nlp_lower_bound_inf
-  // is 1e19 and can be changed through ipopt options.
+  // the first constraint g1 has an upper bound of 0.4
   g_u[0] = 0.4;
 
-  // the second constraint g2 is an equality constraint, so we set the
-  // upper and lower bound to the same value
-  // g_l[1] = g_u[1] = 40.0;
 
   return true;
 }
@@ -99,11 +92,6 @@ bool HS071_NLP::get_starting_point(Index n, bool init_x, Number* x,
 		x[i] = 0.4;
 	}
 
-										//  x[0] = 3.0;
-										//  x[1] = 5.0;
-										//  x[2] = 2.0;
-										//  x[3] = 1.0;
-
   return true;
 }
 
@@ -124,8 +112,6 @@ bool HS071_NLP::eval_f(Index n, const Number* x, bool new_x, Number& obj_value)
 
 	obj_value = obj_value/(N*N);
 
-										// obj_value = x[0] * x[3] * (x[0] + x[1] + x[2]) + x[2];
-
   return true;
 }
 
@@ -135,11 +121,6 @@ bool HS071_NLP::eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f
   assert(n == N*N);
 
 // TODO: Adjoint
-
-										//  grad_f[0] = x[0] * x[3] + x[3] * (x[0] + x[1] + x[2]);
-										//  grad_f[1] = x[0] * x[3];
-										//  grad_f[2] = x[0] * x[3] + 1;
-										//  grad_f[3] = x[0] * (x[0] + x[1] + x[2]);
 
   return true;
 }
@@ -155,9 +136,6 @@ bool HS071_NLP::eval_g(Index n, const Number* x, bool new_x, Index m, Number* g)
 	}
 	g[0] = g[0]/(N*N); 
 
-										//  g[0] = x[0] * x[1] * x[2] * x[3];
-										//  g[1] = x[0]*x[0] + x[1]*x[1] + x[2]*x[2] + x[3]*x[3];
-
   return true;
 }
 
@@ -169,39 +147,6 @@ bool HS071_NLP::eval_jac_g(Index n, const Number* x, bool new_x,
 	for (int i=0;i<N*N;i++){
 		values[i] = 1/(N*N);
 	}
-	
-										 // if (values == NULL) {
-										 //  return the structure of the jacobian
-
-											//  this particular jacobian is dense
-											// iRow[0] = 0;
-											// jCol[0] = 0;
-											// iRow[1] = 0;
-											// jCol[1] = 1;
-											// iRow[2] = 0;
-											// jCol[2] = 2;
-											// iRow[3] = 0;
-											// jCol[3] = 3;
-											// iRow[4] = 1;
-											// jCol[4] = 0;
-											// iRow[5] = 1;
-											// jCol[5] = 1;
-											// iRow[6] = 1;
-											// jCol[6] = 2;
-											// iRow[7] = 1;
-											// jCol[7] = 3;
-										  // }
-										  // else {
-										  //  return the values of the jacobian of the constraints
-											// values[0] = x[1]*x[2]*x[3]; // 0,0
-											// values[1] = x[0]*x[2]*x[3]; // 0,1
-											// values[2] = x[0]*x[1]*x[3]; // 0,2
-											// values[3] = x[0]*x[1]*x[2]; // 0,3
-											// values[4] = 2*x[0]; // 1,0
-											// values[5] = 2*x[1]; // 1,1
-											// values[6] = 2*x[2]; // 1,2
-											// values[7] = 2*x[3]; // 1,3
-											// }
 
   return true;
 }
