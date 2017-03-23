@@ -26,7 +26,9 @@ public:
         SparseMatrix<double> inv = SparseMatrix<double>(n*n,n*n);
         inv.reserve(VectorXd::Constant(n*n,1));
         inv.setIdentity();
+        cout <<"starting to calculate"<<endl;
         A_inv = solver.solve(inv);
+        cout<<"done calculating inverse"<<endl;
         (*this).x = VectorXd::Map(x,n*n);
     }
 
@@ -55,6 +57,7 @@ public:
                 dydp[i*n+j] = test2;
             }
         }
+        cout <<"general case done"<<endl;
         for(int i=1;i<n-1;i++){//left edge
             dAdpi.setZero();
 
@@ -70,9 +73,9 @@ public:
             double test2 = dydpi * dAdpi * x;
             dydp[i*n] = test2;
         }
+        cout <<"left case done"<<endl;
         for(int i=1;i<n-1;i++){//right edge
             dAdpi.setZero();
-
             dAdpi.insert(i*n+n-1,(i)*n+n-1) = 3;
             dAdpi.insert(i*n+n-1,(i-1)*n+n-1) = -1;
             dAdpi.insert(i*n+n-1,(i+1)*n+n-1) = -1;
@@ -80,11 +83,12 @@ public:
 
             dAdpi.insert((i-1)*n+n-1,(i)*n+n-1) = 1;
             dAdpi.insert((i+1)*n+n-1,(i)*n+n-1) = 1;
-            dAdpi.insert(i*n+n-1,(i)*n+n-1) = 1;
+            dAdpi.insert(i*n+n-2,(i)*n+n-1) = 1;
             RowVectorXd dydpi = d * A_inv;
             double test2 = dydpi * dAdpi * x;
             dydp[i*n+n-1] = test2;
         }
+        cout <<"right case done"<<endl;
         for(int i=1;i<n-1;i++){//bottom edge
             dAdpi.setZero();
 
@@ -100,6 +104,7 @@ public:
             double test2 = dydpi * dAdpi * x;
             dydp[i] = test2;
         }
+        cout <<"bottom case done"<<endl;
         for(int i=1;i<n-1;i++){//top edge
             dAdpi.setZero();
 
@@ -115,6 +120,7 @@ public:
             double test2 = dydpi * dAdpi * x;
             dydp[i*n] = test2;
         }
+        cout <<"top case done"<<endl;
         //bottom left corner
         dAdpi.setZero();
         dAdpi.insert(0,0) = 2;
@@ -162,6 +168,7 @@ public:
         dydpi = d * A_inv;
         test2 = dydpi * dAdpi * x;
         dydp[(n-1)*n] = test2;
+        cout <<"corners case done"<<endl;
     }
 };
 

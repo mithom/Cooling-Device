@@ -10,12 +10,6 @@ using namespace std;
 int n_var;
 
 int main(int argc, char** argv){
-    /*if(argc < 2){
-        cout << "n is defaulted to 10";
-        n_var=10;
-    }else{
-        n_var = atoi(argv[1]);
-    }*/
     const int n = 100; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
     double k[n][n];
     for(int i=0;i<n;i++){

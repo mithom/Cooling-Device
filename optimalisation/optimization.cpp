@@ -36,7 +36,7 @@ bool HS071_NLP::get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
   // in this example the jacobian is dense and contains N^2 nonzeros
   nnz_jac_g = N*N;
 
-  // the hessian is 0
+  // the hessian of the constraints contains 0 nonzero elements
   nnz_h_lag = 0;
 
   // use the C style indexing (0-based)
@@ -53,7 +53,6 @@ bool HS071_NLP::get_bounds_info(Index n, Number* x_l, Number* x_u,
   // If desired, we could assert to make sure they are what we think they are.
   assert(n == N*N);
   assert(m == 1);
-packages/math_eng_soft/CoinIpopt/build/bin/
   // the variables have lower bounds of 0
   for (Index i=0; i<N*N; i++) {
     x_l[i] = 0.0;
@@ -99,11 +98,11 @@ bool HS071_NLP::get_starting_point(Index n, bool init_x, Number* x,
 bool HS071_NLP::eval_f(Index n, const Number* x, bool new_x, Number& obj_value)
 {
   assert(n == N*N);
-	SparseMatrix<double>A(N*N,N*N)
+	SparseMatrix<double>A(N*N,N*N);
 	double solution[N*N];
 	double k[N*N];
 	k = x*80 + (1 - x)*0.01;
-	solve_heath(reinterpret_cast<int(*)[N][N]>(k),solution)
+	solve_heath(reinterpret_cast<int(*)[N][N]>(k),solution);
 
 	for (int i=0;i<N*N;i++){
 		assert(solution[i]>=300);
@@ -119,8 +118,8 @@ bool HS071_NLP::eval_f(Index n, const Number* x, bool new_x, Number& obj_value)
 bool HS071_NLP::eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f)
 {
   assert(n == N*N);
-
-// TODO: Adjoint
+    //todo: FIX
+    Adjoint<n> adj = Adjoint<n>(&A,solution);
 
   return true;
 }
