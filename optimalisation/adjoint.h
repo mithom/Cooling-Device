@@ -9,16 +9,17 @@
 #include <eigen3/Eigen/SparseLU>
 #include <eigen3/Eigen/Dense>
 using namespace std;
-using namespace Eigen;
 
 template<int n>
 class Adjoint {
-    RowVectorXd d;
-    MatrixXd A_inv;
-    VectorXd x;
+    Eigen::RowVectorXd d;
+    Eigen::MatrixXd A_inv;
+    Eigen::VectorXd x;
 
 public:
-    Adjoint(SparseMatrix<double> *A, double *x){
+    Adjoint(Eigen::SparseMatrix<double> *A, double *x){
+        using namespace Eigen;
+
         d = RowVectorXd::Ones(n*n);
         SparseLU<SparseMatrix<double> > solver;
         solver.analyzePattern(*A);
@@ -33,6 +34,8 @@ public:
     }
 
     void get_jacobi_x(double* dydp){
+        using namespace Eigen;
+
         cout << "in jacobi"<<endl;
         SparseMatrix<double> dAdpi = SparseMatrix<double>(n*n,n*n);
         cout << "sparse reserved"<<endl;
