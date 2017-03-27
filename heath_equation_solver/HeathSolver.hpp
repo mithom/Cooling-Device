@@ -39,6 +39,7 @@ void solve_heath(double (&k)[n][n], double *result, Eigen::SparseMatrix<double> 
     const double dx = X/n;
     const int m = n*n;
     A->reserve(VectorXi::Constant(m,5)); //reserve space for 5 cols/row
+    A->setZero();
     VectorXd Q = VectorXd::Ones(m);
     Q=2.5/(0.01*0.01)*Q;
     double mu = 1.0/(dx*dx);

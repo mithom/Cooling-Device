@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # add libmesh with all correct flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lz -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lmesh_opt -I/usr/local/include -pthread -O2 -felide-constructors -funroll-loops -fstrict-aliasing -Wdisabled-optimization -Wno-variadic-macros -fopenmp")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/thomas/CoinIpopt/build/lib")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/thomas/CoinIpopt/build/lib -g")
 
 set(SOURCE_FILES Main.cpp)
 

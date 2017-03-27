@@ -6,7 +6,7 @@ using namespace std;
 int n_var;
 
 int main(int argc, char** argv){
-    const int n = 10; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
+    const int n = 50; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
     /*double k[n][n];
     for(int i=0;i<n;i++){
         std::fill_n(k[i],n,0.1);
@@ -26,9 +26,9 @@ int main(int argc, char** argv){
     cout << "optimizer created"<<endl;
     SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
     cout << "application created"<<endl;
-    //app->Options()->SetNumericValue("tol", 1e-9);
-    //app->Options(); //->SetStringValue("mu_strategy", "adaptive");
-    //app->Options()->SetStringValue("output_file", "ipopt.out");
+    app->Options()->SetNumericValue("tol", 1e-9);
+    app->Options(); //->SetStringValue("mu_strategy", "adaptive");
+    app->Options()->SetStringValue("output_file", "ipopt.out");
     cout << "options set"<<endl;
     Ipopt::ApplicationReturnStatus status = app->Initialize();
     if (status != Solve_Succeeded) {

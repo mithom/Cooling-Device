@@ -112,34 +112,46 @@ public:
     // returns the value of the objective function
     bool eval_f(Index n, const Number* x, bool new_x, Number& obj_value) {
         assert(n == N*N);
+        cout <<"in eval_f"<<endl;
         if(! new_x) cout << "X did not change"<<endl;
         Eigen::SparseMatrix<double>A(n,n);
 
         double k[N][N];
         for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
         solve_heath(k,solution,&A);
-
+        //plot(solution, n);
         for (int i=0;i<N*N;i++){
-            assert(solution[i]>=300);
+            //assert(solution[i]>=300);
+            if(solution[i]<300- 1e-9){
+                cout <<i<<", "<<solution[i]<<endl;
+            }
             obj_value += solution[i]-300;
         }
 
         obj_value = obj_value/(n);
-
+        cout <<"done eval_f"<<endl;
         return true;
     }
 
     // return the gradient of the objective function grad_{x} f(x)
     bool eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f) {
         assert(n == N*N);
+        cout <<"in eval_grad_f"<<endl;
+        if(A.nonZeros() == 0 ){
+            double k[N][N];
+            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
+            solve_heath(k,solution,&A);
+        }
         Adjoint<N> adj = Adjoint<N>(&A,solution);
         adj.get_jacobi_x((double*)(grad_f));
+        cout <<"done eval_grad_f"<<endl;
         return true;
     }
 
     // return the value of the constraints: g(x)
     bool eval_g(Index n, const Number* x, bool new_x, Index m, Number* g)
     {
+        cout <<"in eval_g"<<endl;
         assert(n == N*N);
         assert(m == 1);
 
@@ -147,7 +159,7 @@ public:
             g[0] += x[i];
         }
         g[0] = g[0]/(n);
-
+        cout <<"done eval_g"<<endl;
         return true;
     }
 
@@ -155,11 +167,19 @@ public:
     bool eval_jac_g(Index n, const Number* x, bool new_x,
                     Index m, Index nele_jac, Index* iRow, Index *jCol,
                     Number* values) {
-        assert(*iRow == 1);
-        assert(*jCol == n);
-        for (int i = 0; i < n; i++) {
-            values[i] = 1 / (n);
+        cout << "in eval_jac_g"<<endl;
+        if(values == NULL){
+            for(int i = 0; i<n;i++){
+                iRow[i] = 0;
+                jCol[i]= i;
+            }
+        }else{
+            for (int i = 0; i < n; i++) {
+                values[i] = 1 / (n);
+            }
         }
+        assert(n==nele_jac);
+        cout <<"done eval_jac_g"<<endl;
         return true;
     }
 
@@ -170,7 +190,16 @@ public:
                 bool new_lambda, Index nele_hess, Index* iRow,
                 Index* jCol, Number* values)
     {
-        for(int i=0;i<n;i++) values[i] = 0; //TODO: benaderen!
+        cout <<"in eval_h"<<endl;
+        /*if(values == NULL){
+            for(int i = 0; i<n;i++){
+                iRow[i] = (int)floor(i/N);
+                jCol[i]= (int)(i%N);
+            }
+        }else{
+            for(int i=0;i<n*n;i++) values[i] = 0; //TODO: benaderen!
+        }*/
+        cout <<"done eval_h"<<endl;
         return true;
     }
 
@@ -206,14 +235,13 @@ public:
         }*/
         if (status != SUCCESS) {
             cout << endl << "ended with non-succes status: " << status << endl;
-        } else {
-            double solution[n];
-            double k[N][N];
-            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
-            solve_heath(k,solution,&A);
-            //a little python experiment
-            plot(solution, n * n);
         }
+        double solution[n];
+        double k[N][N];
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
+        solve_heath(k,solution,&A);
+        //a little python experiment
+        plot(solution, n);
     }
 };
 
