@@ -39,6 +39,7 @@ public:
     bool get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
                       Index& nnz_h_lag, IndexStyleEnum& index_style)
     {
+        cout <<"in get_info"<<endl;
         // The problem N^2 variables
         n = N*N;
 
@@ -53,7 +54,7 @@ public:
 
         // use the C style indexing (0-based)
         index_style = TNLP::C_STYLE;
-
+        cout <<"done getting info"<<endl;
         return true;
     }
 
@@ -61,6 +62,7 @@ public:
     bool get_bounds_info(Index n, Number* x_l, Number* x_u,
                          Index m, Number* g_l, Number* g_u)
     {
+        cout <<"getting bounds info"<<endl;
         // here, the n and m we gave IPOPT in get_nlp_info are passed back to us.
         // If desired, we could assert to make sure they are what we think they are.
         assert(n == N*N);
@@ -80,7 +82,7 @@ public:
         // the first constraint g1 has an upper bound of 0.4
         g_u[0] = 0.4;
 
-
+        cout <<"done getting bounds info"<<endl;
         return true;
     }
 
@@ -90,6 +92,7 @@ public:
                             Index m, bool init_lambda,
                             Number* lambda)
     {
+        cout <<"getting starting points"<<endl;
         // Here, we assume we only have starting values for x, if you code
         // your own NLP, you can provide starting values for the dual variables
         // if you wish
@@ -102,7 +105,7 @@ public:
         for (int i=0;i<n;i++){
             x[i] = 0.4;
         }
-
+        cout <<"done getting starting points"<<endl;
         return true;
     }
 
@@ -130,7 +133,6 @@ public:
     bool eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f) {
         assert(n == N*N);
         Adjoint<N> adj = Adjoint<N>(&A,solution);
-        double dydp[n];
         adj.get_jacobi_x((double*)(grad_f));
         return true;
     }
@@ -157,9 +159,8 @@ public:
         assert(*jCol == n);
         for (int i = 0; i < n; i++) {
             values[i] = 1 / (n);
-
-            return true;
         }
+        return true;
     }
 
     //return the structure or values of the hessian of the lagrangian:

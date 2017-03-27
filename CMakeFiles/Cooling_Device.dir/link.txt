@@ -1,0 +1,1 @@
+/usr/bin/c++    -L/home/thomas/CoinIpopt/build/lib -g   CMakeFiles/Cooling_Device.dir/Main.cpp.o  -o Cooling_Device -lblas -llapack -llapacke -lipopt -lm -ldl /usr/lib/x86_64-linux-gnu/libpython2.7.so 

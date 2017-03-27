@@ -24,10 +24,10 @@ int main(int argc, char** argv){
 
     Ipopt::SmartPtr<Ipopt::TNLP> mynlp = new HS071_NLP<n>();
     cout << "optimizer created"<<endl;
-    SmartPtr<IpoptApplication> app = *(new SmartPtr<IpoptApplication>());
+    SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
     cout << "application created"<<endl;
     //app->Options()->SetNumericValue("tol", 1e-9);
-    //app->Options()->SetStringValue("mu_strategy", "adaptive");
+    //app->Options(); //->SetStringValue("mu_strategy", "adaptive");
     //app->Options()->SetStringValue("output_file", "ipopt.out");
     cout << "options set"<<endl;
     Ipopt::ApplicationReturnStatus status = app->Initialize();

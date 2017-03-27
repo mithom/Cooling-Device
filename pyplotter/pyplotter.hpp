@@ -34,7 +34,7 @@ void plot(double solution[], size_t size){
 
     pFunc = PyObject_GetAttrString(pModule, "test");
     PyObject *arglist = Py_BuildValue("(S)", makelist(solution,size));
-    PyObject *result = PyObject_CallObject(pFunc, arglist);
+    PyObject_CallObject(pFunc, arglist);
     cout<<"called function"<<endl;
     Py_DECREF(arglist);
     cout<<"ready to finalize"<<endl;
