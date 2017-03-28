@@ -245,6 +245,8 @@ eigen3/Eigen/SparseLU
 -
 eigen3/Eigen/Dense
 -
+math.h
+-
 
 /home/thomas/Documents/Cooling-Device/optimalisation/optimalisation.h
 cassert

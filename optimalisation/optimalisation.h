@@ -26,6 +26,7 @@ template <int N>
 class HS071_NLP : public TNLP{
     Eigen::SparseMatrix<double> A;
     double solution[N*N];
+    int q = 4;
 public:
     // constructor
     HS071_NLP(){
@@ -50,7 +51,7 @@ public:
         nnz_jac_g = N*N;
 
         // the hessian of the constraints contains 0 nonzero elements TODO: dit is fout!!!!!!!
-        nnz_h_lag = 0;
+        nnz_h_lag = N*N*N*N;
 
         // use the C style indexing (0-based)
         index_style = TNLP::C_STYLE;
@@ -117,7 +118,7 @@ public:
         Eigen::SparseMatrix<double>A(n,n);
 
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,&A);
         //plot(solution, n);
         for (int i=0;i<N*N;i++){
@@ -139,12 +140,18 @@ public:
         cout <<"in eval_grad_f"<<endl;
         if(A.nonZeros() == 0 ){
             double k[N][N];
-            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
+            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
             solve_heath(k,solution,&A);
         }
         Adjoint<N> adj = Adjoint<N>(&A,solution);
-        adj.get_jacobi_x((double*)(grad_f));
+        adj.get_jacobi_x((double*)(grad_f),q);
         cout <<"done eval_grad_f"<<endl;
+        for(int i=0;i<N;i++){
+            for (int j = 0; j < N; ++j) {
+                cout << 0.1 + x[i*n+j]*79.9/(1+q*(1-x[i*n+j])) <<", ";
+            }
+            cout <<endl;
+        }
         return true;
     }
 
@@ -200,7 +207,7 @@ public:
             for(int i=0;i<n*n;i++) values[i] = 0; //TODO: benaderen!
         }*/
         cout <<"done eval_h"<<endl;
-        return true;
+        return false;
     }
 
     void finalize_solution(SolverReturn status,
@@ -238,7 +245,7 @@ public:
         }
         double solution[n];
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,&A);
         //a little python experiment
         plot(solution, n, (double*)x);

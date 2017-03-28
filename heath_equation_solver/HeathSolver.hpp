@@ -33,7 +33,7 @@ void test_packages(const int n){
 }
 
 template<int n>
-void solve_heath(double (&k)[n][n], double *result, Eigen::SparseMatrix<double> *A){
+void solve_heath(double (*k)[n], double *result, Eigen::SparseMatrix<double> *A){
     using namespace Eigen;
     //test_packages(10);
     const double dx = X/n;
