@@ -118,8 +118,8 @@ public:
         Eigen::SparseMatrix<double>A(n,n);
 
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0); //0.1 + x[i]*79.9/(1+q*(1-x[i]));
-        solve_heath(k,solution,&A);
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow(x[i],3.0); //0.1 + x[i]*79.9/(1+q*(1-x[i]));
+        solve_heath(k,solution,A);
         //plot(solution, n);
         for (int i=0;i<N*N;i++){
             //assert(solution[i]>=300);
@@ -140,18 +140,12 @@ public:
         cout <<"in eval_grad_f"<<endl;
         if(A.nonZeros() == 0 ){
             double k[N][N];
-            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
-            solve_heath(k,solution,&A);
+            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow((x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
+            solve_heath(k,solution,A);
         }
-        Adjoint<N> adj(&A,solution);
-        adj.get_jacobi_x((double*)(grad_f),q);
+        Adjoint<N> adj(A,solution);
+        adj.get_jacobi_x((double*)(grad_f),q,(double*) x);
         cout <<"done eval_grad_f"<<endl;
-        for(int i=0;i<N;i++){
-            for (int j = 0; j < N; ++j) {
-                cout << 0.1 + x[i*n+j]*79.9/(1+q*(1-x[i*n+j])) <<", ";
-            }
-            cout <<endl;
-        }
         return true;
     }
 
@@ -245,8 +239,8 @@ public:
         }
         double solution[n];
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
-        solve_heath(k,solution,&A);
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow((x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
+        solve_heath(k,solution,A);
         //a little python experiment
         plot(solution, n, (double*)x);
     }

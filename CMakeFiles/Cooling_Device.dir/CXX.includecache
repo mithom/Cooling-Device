@@ -229,6 +229,8 @@ IpIpoptApplication.hpp
 -
 optimalisation/optimalisation.h
 /home/thomas/Documents/Cooling-Device/optimalisation/optimalisation.h
+pyplotter/pyplotter.hpp
+/home/thomas/Documents/Cooling-Device/pyplotter/pyplotter.hpp
 
 /home/thomas/Documents/Cooling-Device/heath_equation_solver/HeathSolver.hpp
 iostream
