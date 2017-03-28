@@ -241,7 +241,7 @@ public:
         for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = x[i]*80 + (1 - x[i])*0.01;
         solve_heath(k,solution,&A);
         //a little python experiment
-        plot(solution, n);
+        plot(solution, n, (double*)x);
     }
 };
 
