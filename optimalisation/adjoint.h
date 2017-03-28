@@ -13,176 +13,189 @@ using namespace std;
 
 template<int n>
 class Adjoint {
-    Eigen::RowVectorXd d;
-    Eigen::MatrixXd A_inv;
+    Eigen::VectorXd d;
+    //Eigen::MatrixXd A_inv;
     Eigen::VectorXd x;
+    Eigen::SparseMatrix<double> A;
+    Eigen::SparseLU<Eigen::SparseMatrix<double> > solver;
 
 public:
-    Adjoint(Eigen::SparseMatrix<double> *A, double *x){
+    Adjoint(Eigen::SparseMatrix<double> *A,double *x1){
         using namespace Eigen;
 
-        d = RowVectorXd::Ones(n*n);
-        SparseLU<SparseMatrix<double> > solver;
-        solver.analyzePattern(*A);
-        solver.compute(*A);
-        SparseMatrix<double> inv = SparseMatrix<double>(n*n,n*n);
+        x = VectorXd::Map(x1,n*n);
+        d = VectorXd::Ones(n*n) + (2* x) + (VectorXd::Ones(n*n)*VectorXd::Ones(n*n).transpose())*x*2/(n*n);
+
+        this->A = *A;
+        solver.analyzePattern(this->A);
+        solver.factorize(this->A);
+        /*SparseMatrix<double> inv = SparseMatrix<double>(n*n,n*n);
         inv.reserve(VectorXd::Constant(n*n,1));
         inv.setIdentity();
         cout <<"starting to calculate"<<endl;
         A_inv = solver.solve(inv);
-        cout<<"done calculating inverse"<<endl;
-        (*this).x = VectorXd::Map(x,n*n);
+        cout<<"done calculating inverse"<<endl;*/
+
     }
 
     void get_jacobi_x(double* dydp, int q){
         using namespace Eigen;
 
         cout << "in jacobi"<<endl;
-        SparseMatrix<double> dAdpi = SparseMatrix<double>(n*n,n*n);
+        SparseMatrix<double> dAdki = SparseMatrix<double>(n*n,n*n);
         for(int i=1;i<n-1;i++){
             for(int j=1;j<n-1;j++){//General case
-                dAdpi.setZero();
+                dAdki.setZero();
 
-                dAdpi.insert(i*n+j,(i)*n+j) = 4;
-                dAdpi.insert(i*n+j,(i-1)*n+j) = -1;
-                dAdpi.insert(i*n+j,(i+1)*n+j) = -1;
-                dAdpi.insert(i*n+j,(i)*n+j+1) = -1;
-                dAdpi.insert(i*n+j,(i)*n+j-1) = -1;
+                dAdki.insert(i*n+j,(i)*n+j) = 4;
+                dAdki.insert(i*n+j,(i-1)*n+j) = -1;
+                dAdki.insert(i*n+j,(i+1)*n+j) = -1;
+                dAdki.insert(i*n+j,(i)*n+j+1) = -1;
+                dAdki.insert(i*n+j,(i)*n+j-1) = -1;
 
-                dAdpi.insert((i+1)*n+j,(i)*n+j) = 1;
-                dAdpi.insert((i-1)*n+j,(i)*n+j) = 1;
-                dAdpi.insert(i*n+j+1,(i)*n+j) = 1;
-                dAdpi.insert(i*n+j-1,(i)*n+j) = 1;
+                dAdki.insert((i+1)*n+j,(i)*n+j) = 1;
+                dAdki.insert((i-1)*n+j,(i)*n+j) = 1;
+                dAdki.insert(i*n+j+1,(i)*n+j) = 1;
+                dAdki.insert(i*n+j-1,(i)*n+j) = 1;
 
-                double factor = 79.9*(1+q)/pow((q*(1-x[i*n+j])+1),2.0);
+                //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n+j])+1),2.0);
+                double dkdp = 0.1-3*pow((1-x[i]),2.0);
                 //RowVectorXd dydpi = d * A_inv;
-                //double test2 = dydpi * (dAdpi*factor) * x;
-                double test2 = d*A_inv*(dAdpi*factor)*x;
+                //double test2 = dydpi * (dAdki*dkdp) * x;
+                double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
                 dydp[i*n+j] = test2;
             }
         }
         cout <<"general case done"<<endl;
         for(int i=1;i<n-1;i++){//left edge
-            dAdpi.setZero();
+            dAdki.setZero();
 
-            dAdpi.insert(n*i,(i)*n) = 3;
-            dAdpi.insert(i*n,(i-1)*n) = -1;
-            dAdpi.insert(i*n,(i+1)*n) = -1;
-            dAdpi.insert(i*n,(i)*n+1) = -1;
+            dAdki.insert(n*i,(i)*n) = 3;
+            dAdki.insert(i*n,(i-1)*n) = -1;
+            dAdki.insert(i*n,(i+1)*n) = -1;
+            dAdki.insert(i*n,(i)*n+1) = -1;
 
-            dAdpi.insert((i+1)*n,(i)*n) = 1;
-            dAdpi.insert((i-1)*n,(i)*n) = 1;
-            dAdpi.insert(i*n+1,(i)*n) = 1;
+            dAdki.insert((i+1)*n,(i)*n) = 1;
+            dAdki.insert((i-1)*n,(i)*n) = 1;
+            dAdki.insert(i*n+1,(i)*n) = 1;
 
-            double factor = 79.9*(1+q)/pow((q*(1-x[i*n])+1),2.0);
-            RowVectorXd dydpi = d * A_inv;
-            double test2 = dydpi * (dAdpi*factor) * x;
+            //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n])+1),2.0);
+            double dkdp = 0.1-3*pow((1-x[i*n]),2.0);
+            //RowVectorXd dydpi = d * A_inv;
+            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
             dydp[i*n] = test2;
         }
         for(int i=1;i<n-1;i++){//right edge
-            dAdpi.setZero();
-            dAdpi.insert(i*n+n-1,(i)*n+n-1) = 3;
-            dAdpi.insert(i*n+n-1,(i-1)*n+n-1) = -1;
-            dAdpi.insert(i*n+n-1,(i+1)*n+n-1) = -1;
-            dAdpi.insert(i*n+n-1,(i)*n+n-2) = -1;
+            dAdki.setZero();
+            dAdki.insert(i*n+n-1,(i)*n+n-1) = 3;
+            dAdki.insert(i*n+n-1,(i-1)*n+n-1) = -1;
+            dAdki.insert(i*n+n-1,(i+1)*n+n-1) = -1;
+            dAdki.insert(i*n+n-1,(i)*n+n-2) = -1;
 
-            dAdpi.insert((i-1)*n+n-1,(i)*n+n-1) = 1;
-            dAdpi.insert((i+1)*n+n-1,(i)*n+n-1) = 1;
-            dAdpi.insert(i*n+n-2,(i)*n+n-1) = 1;
+            dAdki.insert((i-1)*n+n-1,(i)*n+n-1) = 1;
+            dAdki.insert((i+1)*n+n-1,(i)*n+n-1) = 1;
+            dAdki.insert(i*n+n-2,(i)*n+n-1) = 1;
 
-            double factor = 79.9*(1+q)/pow((q*(1-x[i*n+n-1])+1),2.0);
-            RowVectorXd dydpi = d * A_inv;
-            double test2 = dydpi * (dAdpi*factor) * x;
+            double dkdp = 0.1-3*pow((1-x[i*n+n-1]),2.0);
+            //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n+n-1])+1),2.0);
+            //RowVectorXd dydpi = d * A_inv;
+            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
             dydp[i*n+n-1] = test2;
         }
         for(int i=1;i<n-1;i++){//bottom edge
-            dAdpi.setZero();
+            dAdki.setZero();
 
-            dAdpi.insert(i,(i)) = 3;
-            dAdpi.insert(i,(i-1)) = -1;
-            dAdpi.insert(i,(i+1)) = -1;
-            dAdpi.insert(i,i+n) = -1;
+            dAdki.insert(i,(i)) = 3;
+            dAdki.insert(i,(i-1)) = -1;
+            dAdki.insert(i,(i+1)) = -1;
+            dAdki.insert(i,i+n) = -1;
 
-            dAdpi.insert(i-1,(i)) = 1;
-            dAdpi.insert(i+1,(i)) = 1;
-            dAdpi.insert(i+n,(i)) = 1;
+            dAdki.insert(i-1,(i)) = 1;
+            dAdki.insert(i+1,(i)) = 1;
+            dAdki.insert(i+n,(i)) = 1;
 
-            double factor = 79.9*(1+q)/pow((q*(1-x[i])+1),2.0);
-            RowVectorXd dydpi = d * A_inv;
-            double test2 = dydpi * (dAdpi*factor) * x;
+            double dkdp = 0.1-3*pow((1-x[i]),2.0);
+            //double dkdp = 79.9*(1+q)/pow((q*(1-x[i])+1),2.0);
+            //RowVectorXd dydpi = d * A_inv;
+            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
             dydp[i] = test2;
         }
         for(int i=1;i<n-1;i++){//top edge
-            dAdpi.setZero();
+            dAdki.setZero();
 
-            dAdpi.insert(n*(n-1)+i,n*(n-1)+i) = 3;
-            dAdpi.insert(n*(n-1)+i,n*(n-1)+i+1) = -1;
-            dAdpi.insert(n*(n-1)+i,n*(n-1)+i-1) = -1;
-            dAdpi.insert(n*(n-1)+i,n*(n-2)+i) = -1;
+            dAdki.insert(n*(n-1)+i,n*(n-1)+i) = 3;
+            dAdki.insert(n*(n-1)+i,n*(n-1)+i+1) = -1;
+            dAdki.insert(n*(n-1)+i,n*(n-1)+i-1) = -1;
+            dAdki.insert(n*(n-1)+i,n*(n-2)+i) = -1;
 
-            dAdpi.insert(n*(n-1)+i+1,n*(n-1)+i) = 1;
-            dAdpi.insert(n*(n-1)+i-1,n*(n-1)+i) = 1;
-            dAdpi.insert(n*(n-2)+i,n*(n-1)+i) = 1;
+            dAdki.insert(n*(n-1)+i+1,n*(n-1)+i) = 1;
+            dAdki.insert(n*(n-1)+i-1,n*(n-1)+i) = 1;
+            dAdki.insert(n*(n-2)+i,n*(n-1)+i) = 1;
 
-            double factor = 79.9*(1+q)/pow((q*(1-x[n*(n-1)+i])+1),2.0);
-            RowVectorXd dydpi = d * A_inv;
-            double test2 = dydpi * (dAdpi*factor) * x;
+            double dkdp = 0.1-3*pow((1-x[n*(n-1)+i]),2.0);
+            //double dkdp = 79.9*(1+q)/pow((q*(1-x[n*(n-1)+i])+1),2.0);
+            //RowVectorXd dydpi = d * A_inv;
+            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
             dydp[i*n] = test2;
         }
         //bottom left corner
-        dAdpi.setZero();
-        dAdpi.insert(0,0) = 2;
-        dAdpi.insert(0,1) = -1;
-        dAdpi.insert(0,n) = -1;
+        dAdki.setZero();
+        dAdki.insert(0,0) = 2;
+        dAdki.insert(0,1) = -1;
+        dAdki.insert(0,n) = -1;
 
-        dAdpi.insert(n,0) = 1;
-        dAdpi.insert(1,0) = 1;
+        dAdki.insert(n,0) = 1;
+        dAdki.insert(1,0) = 1;
 
-        double factor = 79.9*(1+q)/pow((q*(1-x[0])+1),2.0);
-        RowVectorXd dydpi = d * A_inv;
-        double test2 = dydpi * (dAdpi*factor) * x;
+        double dkdp = 0.1-3*pow((1-x[0]),2.0);
+        //double dkdp = 79.9*(1+q)/pow((q*(1-x[0])+1),2.0);
+        //RowVectorXd dydpi = d * A_inv;
+        double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
         dydp[0] = test2;
 
         //bottom right corner
-        dAdpi.setZero();
-        dAdpi.insert(n-1,n-1) = 2;
-        dAdpi.insert(n-1,n-2) = -1;
-        dAdpi.insert(n-1,n+n-1) = -1;
+        dAdki.setZero();
+        dAdki.insert(n-1,n-1) = 2;
+        dAdki.insert(n-1,n-2) = -1;
+        dAdki.insert(n-1,n+n-1) = -1;
 
-        dAdpi.insert(n+n-1,n-1) = 1;
-        dAdpi.insert(n-2,n-1) = 1;
+        dAdki.insert(n+n-1,n-1) = 1;
+        dAdki.insert(n-2,n-1) = 1;
 
-        factor = 79.9*(1+q)/pow((q*(1-x[n-1])+1),2.0);
-        dydpi = d * A_inv;
-        test2 = dydpi * (dAdpi*factor) * x;
+        dkdp = 0.1-3*pow((1-x[n-1]),2.0);
+        //dkdp = 79.9*(1+q)/pow((q*(1-x[n-1])+1),2.0);
+        //dydpi = d * A_inv;
+        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
         dydp[n-1] = test2;
 
         //top right corner
-        dAdpi.setZero();
-        dAdpi.insert(n*n-1,n*n-1) = 2;
-        dAdpi.insert(n*n-1,n*n-2) = -1;
-        dAdpi.insert(n*n-1,(n-1)*n-1) = -1;
+        dAdki.setZero();
+        dAdki.insert(n*n-1,n*n-1) = 2;
+        dAdki.insert(n*n-1,n*n-2) = -1;
+        dAdki.insert(n*n-1,(n-1)*n-1) = -1;
 
-        dAdpi.insert(n*n-2,n*n-1) = 1;
-        dAdpi.insert((n-1)*n-1,n*n-1) = 1;
+        dAdki.insert(n*n-2,n*n-1) = 1;
+        dAdki.insert((n-1)*n-1,n*n-1) = 1;
 
-        factor = 79.9*(1+q)/pow((q*(1-x[n*n-1])+1),2.0);
-        dydpi = d * A_inv;
-        test2 = dydpi * (dAdpi*factor) * x;
+        dkdp = 0.1-3*pow((1-x[n*n-1]),2.0);
+        //dkdp = 79.9*(1+q)/pow((q*(1-x[n*n-1])+1),2.0);
+        //dydpi = d * A_inv;
+        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
         dydp[n*n-1] = test2;
 
         //top left corner
-        dAdpi.setZero();
-        dAdpi.insert((n-1)*n,(n-1)*n) = 2;
-        dAdpi.insert((n-1)*n,(n-1)*n+1) = -1;
-        dAdpi.insert((n-1)*n,(n-2)*n) = -1;
+        dAdki.setZero();
+        dAdki.insert((n-1)*n,(n-1)*n) = 2;
+        dAdki.insert((n-1)*n,(n-1)*n+1) = -1;
+        dAdki.insert((n-1)*n,(n-2)*n) = -1;
 
-        dAdpi.insert((n-1)*n+1,(n-1)*n) = 1;
-        dAdpi.insert((n-2)*n,(n-1)*n) = 1;
+        dAdki.insert((n-1)*n+1,(n-1)*n) = 1;
+        dAdki.insert((n-2)*n,(n-1)*n) = 1;
 
-        factor = 79.9*(1+q)/pow((q*(1-x[(n-1)*n])+1),2.0);
-        dydpi = d * A_inv;
-        test2 = dydpi * (dAdpi*factor) * x;
+        dkdp = 0.1-3*pow((1-x[(n-1)*n]),2.0);
+        //dkdp = 79.9*(1+q)/pow((q*(1-x[(n-1)*n])+1),2.0);
+        //dydpi = d * A_inv;
+        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
         dydp[(n-1)*n] = test2;
         cout <<"adjoint calculations done"<<endl;
     }

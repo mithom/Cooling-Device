@@ -97,7 +97,7 @@ void solve_heath(double (*k)[n], double *result, Eigen::SparseMatrix<double> *A)
             A->insert(i*n,(i)*n+1) =-(k[i][0]+ k[i][1])*mu/2;
         }else{ //middle
             A->insert(i*n,(i)*n) = 1;
-            Q(i*n)=300;
+            Q(i*n)=0;
         }
 
     }

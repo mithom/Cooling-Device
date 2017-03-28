@@ -104,7 +104,7 @@ public:
         // initialize to the given starting point
 
         for (int i=0;i<n;i++){
-            x[i] = 0.4;
+            x[i] = 0.1;
         }
         cout <<"done getting starting points"<<endl;
         return true;
@@ -118,15 +118,15 @@ public:
         Eigen::SparseMatrix<double>A(n,n);
 
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0); //0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,&A);
         //plot(solution, n);
         for (int i=0;i<N*N;i++){
             //assert(solution[i]>=300);
-            if(solution[i]<300- 1e-9){
+            if(solution[i]<0- 1e-9){
                 cout <<i<<", "<<solution[i]<<endl;
             }
-            obj_value += solution[i]-300;
+            obj_value += solution[i];
         }
 
         obj_value = obj_value/(n);
@@ -140,10 +140,10 @@ public:
         cout <<"in eval_grad_f"<<endl;
         if(A.nonZeros() == 0 ){
             double k[N][N];
-            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
+            for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
             solve_heath(k,solution,&A);
         }
-        Adjoint<N> adj = Adjoint<N>(&A,solution);
+        Adjoint<N> adj(&A,solution);
         adj.get_jacobi_x((double*)(grad_f),q);
         cout <<"done eval_grad_f"<<endl;
         for(int i=0;i<N;i++){
@@ -245,7 +245,7 @@ public:
         }
         double solution[n];
         double k[N][N];
-        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + x[i]*79.9/(1+q*(1-x[i]));
+        for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1*x[i] + 80*pow((1-x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,&A);
         //a little python experiment
         plot(solution, n, (double*)x);
