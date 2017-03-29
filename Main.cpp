@@ -6,7 +6,7 @@ using namespace std;
 int n_var;
 
 int main(int argc, char** argv){
-    const int n = 25; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
+    const int n = 50; // moet gekend zijn om snel te zijn, anders met pointers, maar trager //http://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
     /*double k[n][n];
     std::fill_n(k[0],n,0.1);
     for(int i=1;i<n;i++){
@@ -25,14 +25,11 @@ int main(int argc, char** argv){
     //cout << "jacobi calculated"<<endl;*/
 
     Ipopt::SmartPtr<Ipopt::TNLP> mynlp = new HS071_NLP<n>();
-    cout << "optimizer created"<<endl;
     SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
-    cout << "application created"<<endl;
     app->Options()->SetNumericValue("tol", 1e-9);
     app->Options()->SetStringValue("mu_strategy", "adaptive");
     app->Options()->SetStringValue("output_file", "ipopt.out");
     app->Options()->SetStringValue("hessian_approximation","limited-memory");
-    cout << "options set"<<endl;
     Ipopt::ApplicationReturnStatus status = app->Initialize();
     if (status != Solve_Succeeded) {
         printf("\n\n*** Error during initialization!\n");

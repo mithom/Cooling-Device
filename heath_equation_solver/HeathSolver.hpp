@@ -21,17 +21,6 @@ const double Q = 2.5;
 const double X = 0.01;
 const double Y = X;
 
-void test_packages(const int n){
-    using namespace Eigen;
-    VectorXd vec(n);
-    VectorXd v = VectorXd::Random(100);
-    vec << 1,2,3,4,5,6,7,8,9,10;
-    cout << "v= " << v <<endl<< "vec= " << vec << endl;
-    MatrixXd m = MatrixXd::Random(100,100);
-    VectorXd v1 = m.selfadjointView<Upper>().llt().solve(v);
-    cout<<v1<<endl;
-}
-
 double harmonic_average(double a, double b){
     return 2/(1/a+1/b);
 }
@@ -40,7 +29,7 @@ template<int n>
 void solve_heath(double (*k)[n], double *result, Eigen::SparseMatrix<double> &A){
     using namespace Eigen;
     //test_packages(10);
-    const double dx = X/n;
+    const double dx = X/(n-1);
     const int m = n*n;
     A.reserve(VectorXi::Constant(m,5)); //reserve space for 5 cols/row
     A.setZero();
@@ -105,7 +94,7 @@ void solve_heath(double (*k)[n], double *result, Eigen::SparseMatrix<double> &A)
             A.insert(i*n,(i)*n+1) =-(harmonic_average(k[i][0], k[i][1]))*mu;
         }else{ //middle
             A.insert(i*n,(i)*n) = 1;
-            Q(i*n)=0;
+            Q(i*n)=300;
         }
 
     }
@@ -117,9 +106,7 @@ void solve_heath(double (*k)[n], double *result, Eigen::SparseMatrix<double> &A)
     solver.analyzePattern(A);
     // Compute the numerical factorization
     solver.factorize(A);
-    cout << "vlak voor oplossen"<<endl;
     VectorXd x1 = solver.solve(Q);
-    //cout <<x1<<endl<<endl;
     Map<MatrixXd>( result, x1.rows(), x1.cols() ) = x1;
 }
 

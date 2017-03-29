@@ -81,7 +81,7 @@ public:
         // the first constraint g1 has a lower bound of 0
         g_l[0] = 0;
         // the first constraint g1 has an upper bound of 0.4
-        g_u[0] = 0.35;
+        g_u[0] = 0.38;
 
         cout <<"done getting bounds info"<<endl;
         return true;
@@ -113,7 +113,6 @@ public:
     // returns the value of the objective function
     bool eval_f(Index n, const Number* x, bool new_x, Number& obj_value) {
         assert(n == N*N);
-        cout <<"in eval_f"<<endl;
         if(! new_x) cout << "X did not change"<<endl;
         Eigen::SparseMatrix<double>A(n,n);
 
@@ -123,14 +122,12 @@ public:
         //plot(solution, n);
         double obj_value_double = (Eigen::RowVectorXd::Ones(n)+Eigen::RowVectorXd::Map(solution,n)-((1/n)*Eigen::RowVectorXd::Map(solution,n)*Eigen::VectorXd::Ones(n)*Eigen::RowVectorXd::Ones(n)))*Eigen::VectorXd::Map(solution,n);
         obj_value = (Number) obj_value_double/(2*n);
-        cout <<"done eval_f"<<endl;
         return true;
     }
 
     // return the gradient of the objective function grad_{x} f(x)
     bool eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f) {
         assert(n == N*N);
-        cout <<"in eval_grad_f"<<endl;
         if(A.nonZeros() == 0 ){
             double k[N][N];
             for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow((x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
@@ -138,14 +135,12 @@ public:
         }
         Adjoint<N> adj(A,solution);
         adj.get_jacobi_x((double*)(grad_f),q,(double*) x);
-        cout <<"done eval_grad_f"<<endl;
         return true;
     }
 
     // return the value of the constraints: g(x)
     bool eval_g(Index n, const Number* x, bool new_x, Index m, Number* g)
     {
-        cout <<"in eval_g"<<endl;
         assert(n == N*N);
         assert(m == 1);
 
@@ -154,7 +149,6 @@ public:
         }
         g[0] = g[0]/(n);
         cout <<"total constraint average"<<g[0]<<endl;
-        cout <<"done eval_g"<<endl;
         return true;
     }
 
@@ -162,7 +156,6 @@ public:
     bool eval_jac_g(Index n, const Number* x, bool new_x,
                     Index m, Index nele_jac, Index* iRow, Index *jCol,
                     Number* values) {
-        cout << "in eval_jac_g"<<endl;
         if(values == NULL){
             for(int i = 0; i<n;i++){
                 iRow[i] = 0;
@@ -174,7 +167,6 @@ public:
             }
         }
         assert(n==nele_jac);
-        cout <<"done eval_jac_g"<<endl;
         return true;
     }
 
@@ -185,7 +177,6 @@ public:
                 bool new_lambda, Index nele_hess, Index* iRow,
                 Index* jCol, Number* values)
     {
-        cout <<"in eval_h"<<endl;
         /*if(values == NULL){
             for(int i = 0; i<n;i++){
                 iRow[i] = (int)floor(i/N);
@@ -194,7 +185,6 @@ public:
         }else{
             for(int i=0;i<n*n;i++) values[i] = 0; //TODO: benaderen!
         }*/
-        cout <<"done eval_h"<<endl;
         return false;
     }
 
@@ -238,6 +228,7 @@ public:
         Adjoint<N> adj(A,solution);
         double grad_f[N*N];
         adj.get_jacobi_x((double*)(grad_f),q,(double*) x);
+        //cout<<Eigen::VectorXd::Map(grad_f,N*N);
         //a little python experiment
         plot(solution, n, (double*)grad_f, (double*) x);
     }

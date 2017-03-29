@@ -45,7 +45,7 @@ public:
     void get_jacobi_x(double* dydp, int q, double *k){
         using namespace Eigen;
 
-        double mu = 1.0/((0.01/n)*(0.01/n));
+        double mu = 1.0/((0.01/(n-1))*(0.01/(n-1)));
         cout << "in jacobi"<<endl;
         SparseMatrix<double> dAdki = SparseMatrix<double>(n*n,n*n);
         for(int i=1;i<n-1;i++){
