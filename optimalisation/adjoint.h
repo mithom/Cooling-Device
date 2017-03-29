@@ -28,7 +28,7 @@ public:
         using namespace Eigen;
 
         x = VectorXd::Map(x1,n*n);
-        d = VectorXd::Ones(n*n) + (2* x) + (VectorXd::Ones(n*n)*VectorXd::Ones(n*n).transpose())*x*2/(n*n);
+        d = (VectorXd::Ones(n*n) + (2* x) - (VectorXd::Ones(n*n)*RowVectorXd::Ones(n*n))*x*2/(n*n))/(2*n*n);
 
         this->A = A;
         solver.analyzePattern(this->A);
@@ -45,6 +45,7 @@ public:
     void get_jacobi_x(double* dydp, int q, double *k){
         using namespace Eigen;
 
+        double mu = 1.0/((0.01/n)*(0.01/n));
         cout << "in jacobi"<<endl;
         SparseMatrix<double> dAdki = SparseMatrix<double>(n*n,n*n);
         for(int i=1;i<n-1;i++){
@@ -66,8 +67,8 @@ public:
                 //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n+j])+1),2.0);
                 double dkdp = 3*pow((x[i]),2.0);
                 //RowVectorXd dydpi = d * A_inv;
-                //double test2 = dydpi * (dAdki*dkdp) * x;
-                double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+                //double test2 = dydpi * (dAdki*mu*dkdp) * x;
+                double test2 = d.dot(-solver.solve((dAdki*mu*dkdp)*x));
                 dydp[i*n+j] = test2;
             }
         }
@@ -88,7 +89,7 @@ public:
             //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n])+1),2.0);
             double dkdp = 3*pow(x[i*n],2.0);
             //RowVectorXd dydpi = d * A_inv;
-            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+            double test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
             dydp[i*n] = test2;
         }
         for(int i=1;i<n-1;i++){//right edge
@@ -106,7 +107,7 @@ public:
             double dkdp = 3*pow((x[i*n+n-1]),2.0);
             //double dkdp = 79.9*(1+q)/pow((q*(1-x[i*n+n-1])+1),2.0);
             //RowVectorXd dydpi = d * A_inv;
-            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+            double test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
             dydp[i*n+n-1] = test2;
         }
         for(int i=1;i<n-1;i++){//bottom edge
@@ -124,7 +125,7 @@ public:
             double dkdp = 3*pow((x[i]),2.0);
             //double dkdp = 79.9*(1+q)/pow((q*(1-x[i])+1),2.0);
             //RowVectorXd dydpi = d * A_inv;
-            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+            double test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
             dydp[i] = test2;
         }
         for(int i=1;i<n-1;i++){//top edge
@@ -143,7 +144,7 @@ public:
             double dkdp = 3*pow((x[n*(n-1)+i]),2.0);
             //double dkdp = 79.9*(1+q)/pow((q*(1-x[n*(n-1)+i])+1),2.0);
             //RowVectorXd dydpi = d * A_inv;
-            double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+            double test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
             dydp[i*n] = test2;
         }
         //bottom left corner
@@ -158,7 +159,7 @@ public:
         double dkdp = 3*pow((x[0]),2.0);
         //double dkdp = 79.9*(1+q)/pow((q*(1-x[0])+1),2.0);
         //RowVectorXd dydpi = d * A_inv;
-        double test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+        double test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
         dydp[0] = test2;
 
         //bottom right corner
@@ -173,7 +174,7 @@ public:
         dkdp = 3*pow((x[n-1]),2.0);
         //dkdp = 79.9*(1+q)/pow((q*(1-x[n-1])+1),2.0);
         //dydpi = d * A_inv;
-        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+        test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
         dydp[n-1] = test2;
 
         //top right corner
@@ -188,7 +189,7 @@ public:
         dkdp = 3*pow((x[n*n-1]),2.0);
         //dkdp = 79.9*(1+q)/pow((q*(1-x[n*n-1])+1),2.0);
         //dydpi = d * A_inv;
-        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+        test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
         dydp[n*n-1] = test2;
 
         //top left corner
@@ -203,7 +204,7 @@ public:
         dkdp = 3*pow((x[(n-1)*n]),2.0);
         //dkdp = 79.9*(1+q)/pow((q*(1-x[(n-1)*n])+1),2.0);
         //dydpi = d * A_inv;
-        test2 = d.dot(solver.solve((dAdki*dkdp)*x));
+        test2 = d.dot(solver.solve((dAdki*mu*dkdp)*x));
         dydp[(n-1)*n] = test2;
         cout <<"adjoint calculations done"<<endl;
     }

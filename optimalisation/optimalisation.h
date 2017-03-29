@@ -51,7 +51,7 @@ public:
         nnz_jac_g = N*N;
 
         // the hessian of the constraints contains 0 nonzero elements TODO: dit is fout!!!!!!!
-        nnz_h_lag = N*N*N*N;
+        //nnz_h_lag = N*N*N*N;
 
         // use the C style indexing (0-based)
         index_style = TNLP::C_STYLE;
@@ -81,7 +81,7 @@ public:
         // the first constraint g1 has a lower bound of 0
         g_l[0] = 0;
         // the first constraint g1 has an upper bound of 0.4
-        g_u[0] = 0.4;
+        g_u[0] = 0.35;
 
         cout <<"done getting bounds info"<<endl;
         return true;
@@ -121,15 +121,8 @@ public:
         for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow(x[i],3.0); //0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,A);
         //plot(solution, n);
-        for (int i=0;i<N*N;i++){
-            //assert(solution[i]>=300);
-            if(solution[i]<0- 1e-9){
-                cout <<i<<", "<<solution[i]<<endl;
-            }
-            obj_value += solution[i];
-        }
-
-        obj_value = obj_value/(n);
+        double obj_value_double = (Eigen::RowVectorXd::Ones(n)+Eigen::RowVectorXd::Map(solution,n)-((1/n)*Eigen::RowVectorXd::Map(solution,n)*Eigen::VectorXd::Ones(n)*Eigen::RowVectorXd::Ones(n)))*Eigen::VectorXd::Map(solution,n);
+        obj_value = (Number) obj_value_double/(2*n);
         cout <<"done eval_f"<<endl;
         return true;
     }
@@ -160,6 +153,7 @@ public:
             g[0] += x[i];
         }
         g[0] = g[0]/(n);
+        cout <<"total constraint average"<<g[0]<<endl;
         cout <<"done eval_g"<<endl;
         return true;
     }
@@ -241,8 +235,11 @@ public:
         double k[N][N];
         for(int i =0;i<n;i++) k[(int)floor(i/N)][(int)(i%N)] = 0.1 + 80*pow((x[i]),3.0);//0.1 + x[i]*79.9/(1+q*(1-x[i]));
         solve_heath(k,solution,A);
+        Adjoint<N> adj(A,solution);
+        double grad_f[N*N];
+        adj.get_jacobi_x((double*)(grad_f),q,(double*) x);
         //a little python experiment
-        plot(solution, n, (double*)x);
+        plot(solution, n, (double*)grad_f, (double*) x);
     }
 };
 
